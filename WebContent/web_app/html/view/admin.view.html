@@ -1,24 +1,72 @@
-<h2 class="sub-header">Lotes</h2>
-<a class="btn btn-lg btn-primary" href="" role="button">Novo lote »</a>
-<div class="table-responsive">
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>codigo</th>
-				<th>status</th>
-				<th>produto</th>
-				<th>intervalo</th>
-				<th>lance inicial</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>00001</td>
-				<td>criado</td>
-				<td>.38</td>
-				<td>10</td>
-				<td>R$10.00</td>
-			</tr>
-		</tbody>
-	</table>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6">
+			<h2 class="sub-header">Lotes</h2>
+		</div>
+		<div class="col-sm-6">
+			<button type="button" class="btn btn-primary"
+				style="float: right; margin-top: 20px; margin-right: 50px;"
+				data-toggle="modal" data-target="#myModal">+ Novo lote</button>
+		</div>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>codigo</th>
+					<th>status</th>
+					<th>produto</th>
+					<th style="width: 160px;">intervalo</th>
+					<th style="width: 160px;">lance inicial</th>
+					<th style="width: 20px;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="lote in lotes">
+					<td>{{lote.id}}</td>
+					<td>{{lote.status}}</td>
+					<td>{{lote.produto}}</td>
+					<td style="width: 160px;">{{lote.intervalo}}</td>
+					<td style="width: 160px;">{{lote.lanceInicial | currency}}</td>
+					<td style="width: 20px;"><md-button class="md-warn">excluir</md-button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Novo Lote</h4>
+			</div>
+			<div class="modal-body">
+				<div layout="column" layout="column" ng-cloak class="md-inline-form">
+					<md-content layout-padding>
+					<div>
+						<form name="loteForm">
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm>
+								<label>#Id</label> <input ng-model="loteModal.id"></md-input-container>
+								<md-input-container class="md-block" flex-gt-sm>
+								<label>#Produto</label> <input ng-model="loteModal.produto"></md-input-container>
+								<md-input-container class="md-block" flex-gt-sm>
+								<label>#Intervalo</label> <input ng-model="loteModal.intervalo"></md-input-container>
+								<md-input-container class="md-block" flex-gt-sm>
+								<label>#Lance Inicial</label> <input ng-model="loteModal.lanceInicial"></md-input-container>
+							</div>
+							<p>Texto Qualquer...</p>
+						</form>
+					</div>
+					</md-content>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="salvarLote(loteModal)">Salvar</button>
+			</div>
+		</div>
+	</div>
 </div>

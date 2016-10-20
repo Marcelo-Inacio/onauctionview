@@ -1,7 +1,7 @@
 /**
  * 
  */
-window.publication =  angular.module('onauction', ['ngAnimate', 'ui.bootstrap','ngRoute','onAuctionControllers']);
+window.publication =  angular.module('onauction', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.bootstrap', 'ngRoute', 'onAuctionControllers']);
 
 publication.config(function($routeProvider){
 	
