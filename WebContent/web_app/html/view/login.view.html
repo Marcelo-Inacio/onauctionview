@@ -2,7 +2,19 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">  
 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 -->
-<div>
-	<h1>PAGINA INICIAL</h1>
-	<h1>{{usuario}}</h1>
+<div class = "container">
+	<div class="wrapper">
+		<form action="" name="Login_form" class="form-signin">       
+		    <h3 class="form-signin-heading">OnAuction</h3>
+			  <hr class="colorgraph"><br>
+			  
+			  <input type="text" ng-model="usuario.username" class="form-control" name="Username" placeholder="Username" required="" autofocus="" />
+			  <input type="password" ng-model="usuario.password" class="form-control" name="Password" placeholder="Password" required=""/>     		  
+			 
+			  <!-- <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit">Login</button>  -->
+			  <div class="bottom-sheet-demo inset" layout="row" layout-sm="column" layout-align="center" >
+			  	<md-button flex="100" class="md-primary md-raised" name="Submit" value="Login" ng-click="fazerLogin(usuario)">Login</md-button>
+			  </div>
+		</form>			
+	</div>
 </div>

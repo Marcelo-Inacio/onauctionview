@@ -18,7 +18,7 @@ publication.config(function($routeProvider){
 	})
 	
 	.otherwise({
-		redirectTo: '/admin'
+		redirectTo: '/login'
 	});
 	
 	

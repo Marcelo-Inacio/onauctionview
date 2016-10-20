@@ -1,14 +1,16 @@
 <div class="container">
+	
 	<div class="row">
 		<div class="col-sm-6">
 			<h2 class="sub-header">Lotes</h2>
 		</div>
 		<div class="col-sm-6">
-			<button type="button" class="btn btn-primary"
+			<md-button md-no-ink class="md-primary"
 				style="float: right; margin-top: 20px; margin-right: 50px;"
-				data-toggle="modal" data-target="#myModal">+ Novo lote</button>
+				data-toggle="modal" data-target="#myModal">+ Novo lote</md-button>
 		</div>
 	</div>
+	
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
@@ -28,7 +30,7 @@
 					<td>{{lote.produto}}</td>
 					<td style="width: 160px;">{{lote.intervalo}}</td>
 					<td style="width: 160px;">{{lote.lanceInicial | currency}}</td>
-					<td style="width: 20px;"><md-button class="md-warn">excluir</md-button></td>
+					<td style="width: 20px;"><md-button class="md-warn" ng-click="excluirLote(lote)">excluir</md-button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -65,7 +67,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="salvarLote(loteModal)">Salvar</button>
+				<md-button md-no-ink class="md-primary" data-dismiss="modal" ng-click="salvarLote(loteModal)">Salvar</md-button>
 			</div>
 		</div>
 	</div>
