@@ -19,7 +19,7 @@ onAuctionControllers.controller("LoginController",  function($scope, loginServic
 		}
 		
 		loginService.fazerLogin(userLogin).then(function (data) {
-
+			
 
         }, function errorCallback(response) {
             // called asynchronously if an error occurs

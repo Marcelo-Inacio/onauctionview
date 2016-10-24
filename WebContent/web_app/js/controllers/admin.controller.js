@@ -16,27 +16,49 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	$scope.irPagina = _irPagina;
 	$scope.buscarLotes = _buscarLotes;
 	
+	var carregarLotes = _carregarlotes;
+		
 	$scope.admistrador;
 	
 	$scope.dataPesquisa = new Date();
-	
-	init();
 
     function init() {
     	$scope.currentNavItem = StorageHelper.getItem('page');
+    	if($scope.currentNavItem === 'admin') {
+    		carregarLotes();    		
+    	}
         //$scope.admistrador = loginService.validarUsuario('administrador');
     }
     
+    function _carregarlotes() {
+    	adminService.carregarTodosLotes().then(function (data) {
+			console.log(data);
+			$scope.lotes = data;
+        });
+    }
+    
 	function _salvarLote(lote) {
-		lote.status = "criado";
-		console.log(lote);
-		$scope.lotes.push(lote);
+		//lote.status = "criado";
+		//console.log(lote);
+		
+		adminService.salvarNovoLote(lote).then(function (data) {
+			console.log(data);
+			$scope.lotes.push(data);
+        });
+		
 		$scope.loteModal = null;
 	}
 	
 	function _excluirLote(lote) {
 		var index = $scope.lotes.indexOf(lote);
-		$scope.lotes.splice(index, 1);     
+		var id = $scope.lotes[index].code;
+		
+		adminService.excluirLote(id).then(function (status) {
+			console.log(status);
+			if(status === 200) {
+				$scope.lotes.splice(index, 1);
+			}
+        });
 	}
 	
 	function _deslogar() {
@@ -45,12 +67,17 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	}
 	
 	function _buscarLotes(data) {
-		adminService.pesquisarLotePorData(data);
+		adminService.pesquisarLotePorData(data).then(function (data) {
+			console.log(data);
+			$scope.lotes = data;
+        });
 	}
 	
 	function _irPagina(pagina) {
 		StorageHelper.setItem('page',pagina);
 		document.location.href = '#/'+pagina;
 	}
+	
+	init();
 	
 });

@@ -26,11 +26,11 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="lote in lotes">
-					<th scope="row">{{lote.id}}</td>
+					<th scope="row">{{lote.code}}</td>
 					<td>{{lote.status}}</td>
-					<td>{{lote.produto}}</td>
-					<td>{{lote.lanceInicial | currency}}</td>
-					<td>{{lote.intervalo | currency}}</td>
+					<td>{{lote.product}}</td>
+					<td>{{lote.initialValue | currency}}</td>
+					<td>{{lote.valueInterval | currency}}</td>
 					<td><md-button class="md-warn" ng-click="excluirLote(lote)">excluir</md-button></td>
 				</tr>
 			</tbody>
@@ -53,11 +53,11 @@
 						<form name="loteForm">
 							<div layout-gt-sm="row">
 								<md-input-container class="md-block" flex-gt-sm>
-								<label>#Produto</label> <input ng-model="loteModal.produto"></md-input-container>
+								<label>#Produto</label> <input ng-model="loteModal.product"></md-input-container>
 								<md-input-container class="md-block" flex-gt-sm>
-								<label>#Lance Inicial</label><input ng-model="loteModal.lanceInicial" type="number" step="0.01"></md-input-container>
+								<label>#Lance Inicial</label><input ng-model="loteModal.initialBid" type="number" step="0.01"></md-input-container>
 								<md-input-container class="md-block" flex-gt-sm>
-								<label>#Intervalo de Valor</label> <input ng-model="loteModal.intervalo" type="number" step="0.01"></md-input-container>
+								<label>#Intervalo de Valor</label> <input ng-model="loteModal.valueInterval" type="number" step="0.01"></md-input-container>
 							</div>
 							<p>Texto Qualquer...</p>
 						</form>

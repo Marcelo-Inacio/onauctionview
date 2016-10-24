@@ -31,6 +31,10 @@ onAuctionControllers.controller("CompradorController",  function($scope, loginSe
     	$scope.ultimoLance += lance;
     }
     
+    function _ultimoLance() {
+    	$scope.ultimoLance = compradorService.recuperarUltimoLance();
+    }
+    
     function _verificarLogado() {
     	return loginService.estaLogado();
     }
