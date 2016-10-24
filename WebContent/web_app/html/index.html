@@ -39,7 +39,7 @@
 	</head>
 
 
-	<body ng-app="onauction">
+	<body ng-app="onauction" ng-cloak>
 		
 		<div id="site-content">
 			
@@ -61,7 +61,6 @@
 		<script src="web_app/lib/js/angular-locale_pt-br.js"></script>
 		
 		<!-- LIBRARIES -->
-		<script src="web_app/js/app.js"></script>
 		<script src="web_app/lib/js/ui-bootstrap.js"></script>
 		<script src="web_app/lib/js/angular-animate.min.js"></script>
 		<script src="web_app/lib/js/angular-aria.min.js"></script>
@@ -72,14 +71,19 @@
 		
 		<!-- APP AANGULAR -->
 		<script src="web_app/js/app.js"></script>
+		<script src="web_app/js/util/util.js"></script>
 		
 		<!-- SERVICES -->
 		<script src="web_app/js/services/login.service.js"></script>
 		<script src="web_app/js/services/admin.service.js"></script>
+		<script src="web_app/js/services/leiloeiro.service.js"></script>
+		<script src="web_app/js/services/comprador.service.js"></script>
 		
 		<!-- CONTROLLERS -->
 		<script src="web_app/js/controllers/login.controller.js"></script>
 		<script src="web_app/js/controllers/admin.controller.js"></script>
+		<script src="web_app/js/controllers/leiloeiro.controller.js"></script>
+		<script src="web_app/js/controllers/comprador.controller.js"></script>
 				
 		<script src="web_app/lib/js/jquery-1.11.3.min.js"></script>
 		<script src="web_app/lib/js/bootstrap.min.js"></script>

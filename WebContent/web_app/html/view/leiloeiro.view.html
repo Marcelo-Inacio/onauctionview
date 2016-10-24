@@ -1,0 +1,38 @@
+<div>
+	<md-button class="md-warn" ng-click="sair();"
+		style="float:right; margin-top: 20px; color:rgba(0,0,0,0.54);">Sair</md-button>
+	<h2>leiloeiro page view</h2>
+</div>
+<div class="container">
+
+	<div class="row">
+			<h2 class="sub-header">Lotes</h2>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>CODIGO</th>
+					<th>STATUS</th>
+					<th>PRODUTO</th>
+					<th>LANCE INICIAL</th>
+					<th>VALOR DE INTERVALO</th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="lote in lotes">
+					<th scope="row">{{lote.id}}</td>
+					<td>{{lote.status}}</td>
+					<td>{{lote.produto}}</td>
+					<td>{{lote.lanceInicial | currency}}</td>
+					<td>{{lote.intervalo | currency}}</td>
+					<td ng-show="lote.status == 'criado' && !loteAndamento()"><md-button class="md-warn" ng-click="abrirLote(lote)">abrir</md-button></td>
+					<td ng-show="lote.status == 'andamento' && loteAndamento()"><md-button class="md-warn" ng-click="fecharLote(lote)">fechar</md-button></td>
+					<td ng-show="(lote.status == 'fechado') || (lote.status == 'criado' && loteAndamento())"><md-button ng-disabled="true">-</md-button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

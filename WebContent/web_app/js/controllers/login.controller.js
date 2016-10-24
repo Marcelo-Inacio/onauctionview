@@ -1,8 +1,6 @@
-onAuctionControllers.controller("LoginController",  function($scope, $http, loginService) {
-	
+onAuctionControllers.controller("LoginController",  function($scope, loginService) {
 	
 	var urlPath = "http://localhost:8080/onauction/login";
-	
 	
 	$scope.usuario = [];
 	$scope.confirmacao = {};
@@ -32,9 +30,6 @@ onAuctionControllers.controller("LoginController",  function($scope, $http, logi
             //$scope.loginState = false;
         });
     
-    
-	}
-	
-			
+	}	
 	
 });

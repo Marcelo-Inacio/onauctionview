@@ -1,6 +1,3 @@
-/**
- * 
- */
 window.publication =  angular.module('onauction', ['ngMaterial', 'ngMessages', 'ngAnimate', 'ui.bootstrap', 'ngRoute', 'onAuctionControllers']);
 
 publication.config(function($routeProvider){
@@ -12,36 +9,42 @@ publication.config(function($routeProvider){
 		templateUrl: path + 'login.view.html',
 		controller: 'LoginController'
 	})
+
+	.when('/index', {
+		templateUrl: path + 'comprador.view.html',
+		controller: 'CompradorController'
+	})
+	
 	.when('/admin', {
 		templateUrl: path + 'admin.view.html',
 		controller: 'AdminController'
 	})
 	
+	.when('/historico', {
+		templateUrl: path + 'admin.lotespordata.view.html',
+		controller: 'AdminController'
+	})
+	
+	.when('/leiloeiro', {
+		templateUrl: path + 'leiloeiro.view.html',
+		controller: 'LeiloeiroController'
+	})
+	
 	.otherwise({
-		redirectTo: '/login'
+		redirectTo: '/index'
 	});
 	
 	
 });
 
-var StorageHelper = (function(){
+publication.config(function($mdThemingProvider) {
 
-	var SH = {};
+    // Configure a dark theme with primary foreground yellow
 
-	SH.setItem = function(chave, valor) {
-		window.localStorage.setItem(chave, angular.toJson(valor));
-	};
+    $mdThemingProvider.theme('docs-dark', 'default')
+      .primaryPalette('yellow')
+      .dark();
 
-	SH.getItem = function(chave, valor) {
-		return angular.fromJson(window.localStorage.getItem(chave));
-	};
-
-	SH.removeItem = function(chave) {
-		window.localStorage.removeItem(chave);
-	}
-
-	return SH;
-
-})();
+  });
 
 window.onAuctionControllers = angular.module('onAuctionControllers', []);

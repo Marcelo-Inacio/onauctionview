@@ -1,15 +1,23 @@
-
 publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
 
 	var urlPath = "http://localhost:8080/onauction";
-
+	var usuarioLogado = false;
+	
 	return {
 		fazerLogin: _Login,
-		fazerLogout: _Logout
+		fazerLogout: _Logout,
+		validarUsuario: _validar,
+		estaLogado: _estaLogado
 	};
+	
+	function _estaLogado() {
+		return usuarioLogado;
+	}
 	
 	function _Login(usuario) {
 		console.log('service: '+usuario);
+		usuarioLogado = true;
+		document.location.href = '#/index';
 		
 		var deferred = $q.defer();
 		var json = JSON.stringify(usuario); 
@@ -38,8 +46,22 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
     }
 	
 	function _Logout() {
-		StorageHelper.removeItem('token');
+		console.log('saindo..');
+		usuarioLogado = false;
+		//StorageHelper.removeItem('token');
 	}
+	
+	function _validar(type) {
+        var usuario = StorageHelper.getItem('user'); //identifica o usuario logado
+      
+        //se não houver identificação ou se não for o typo informado redireciona para login
+        if (usuario == null || usuario.type.toLowerCase() != type) {
+            document.location.href = '#/index';
+        }
+        
+        return usuario; //se der tudo certo irá retornar os dados de quem está logado chamando a função especifica
+        
+    }
     
 
 }]);
