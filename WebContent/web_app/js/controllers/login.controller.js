@@ -1,6 +1,6 @@
 onAuctionControllers.controller("LoginController",  function($scope, loginService) {
 	
-	var urlPath = "http://localhost:8080/onauction/login";
+	var urlPath = getDefaultUrlPath();
 	
 	$scope.usuario = [];
 	$scope.confirmacao = {};

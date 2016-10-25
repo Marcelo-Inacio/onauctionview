@@ -4,12 +4,10 @@ publication.factory('authorizationInterceptor', ['$rootScope', '$q', '$location'
         request: function (config) {
             config.headers = config.headers || {};
 
-            var authData = StorageHelper.getItem('token');
+            var authData = StorageHelper.getItem('Authorization');
 
             if (authData) {
-
                 config.headers.token = authData.token;
-
             }
 
             return config;
@@ -17,15 +15,17 @@ publication.factory('authorizationInterceptor', ['$rootScope', '$q', '$location'
 
         responseError: function (rejection) {
             switch (rejection.status) {
-                case 401: {
-                    console.log($location);
-                    $window.location.href = '/Login.html';
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
+            	case 403:
+	            case 401: {
+	                    console.log($location + 'INTERCEPTOR');
+	                    $window.location.href = '/index';
+	                    break;
+	                }
+	                
+	                default: {
+	                    break;
+	                }
+	            }
 
             return $q.reject(rejection);
         }

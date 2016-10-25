@@ -1,6 +1,6 @@
 publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
 
-	var urlPath = getDefaultUrlPath();//"http://localhost:8585/onauction";
+	var urlPath = getDefaultUrlPath();
 	var usuarioLogado = false;
 	
 	return {
