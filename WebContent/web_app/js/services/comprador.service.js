@@ -1,12 +1,63 @@
 angular.module("onauction").factory("compradorService",  compradorService);
 
-function compradorService($http) {
+function compradorService($http, $q) {
 	
-	var urlPath = "http://localhost:8080/onauction";
+	var urlPath = getDefaultUrlPath();//"http://localhost:8585/onauction";
 	
 	return {
-		recuperarUltimoLance : _ultimoLance
+		recuperarUltimoLance : _ultimoLance,
+		produtoSendoLeiloado : _produto,
+		darLance : _darLance
 	};
+	
+	function _darLance(lance, codComprador) {
+		var deferred = $q.defer();
+		var valor = {value: lance};
+		var json = JSON.stringify(valor); 
+		console.log(json);
+		$http({
+            method: 'POST',
+            url: urlPath + '/' + codComprador + '/toBid',
+            data: json
+        }).
+            success(function (data, status, headers, config) {
+            	
+                deferred.resolve(status);
+            }).
+            then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                deferred.reject("no authentication");
+            });
+
+        return deferred.promise;
+	}
+	
+	function _produto() {
+		var deferred = $q.defer();
+		
+		$http({
+            method: 'GET',
+            url: urlPath + '/batch'
+        }).
+            success(function (data, status, headers, config) {
+            	
+                deferred.resolve(data);
+            }).
+            then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                deferred.reject("no authentication");
+            });
+
+        return deferred.promise;
+	}
 	
 	function _ultimoLance() {
 		
@@ -18,12 +69,13 @@ function compradorService($http) {
         }).
             success(function (data, status, headers, config) {
             	
-                deferred.resolve(data.value);
+                deferred.resolve(data, status);
             }).
             then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
             }, function errorCallback(response) {
+            	console.log('erro service');
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 deferred.reject("no authentication");

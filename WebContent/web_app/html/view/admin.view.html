@@ -31,7 +31,8 @@
 					<td>{{lote.product}}</td>
 					<td>{{lote.initialValue | currency}}</td>
 					<td>{{lote.valueInterval | currency}}</td>
-					<td><md-button class="md-warn" ng-click="excluirLote(lote)">excluir</md-button></td>
+					<td ng-hide="(lote.status !== 'CREATED')"><md-button class="md-warn" ng-click="excluirLote(lote)">excluir</md-button></td>
+					<td ng-show="(lote.status !== 'CREATED')"><md-button ng-disabled="true">-</md-button></td>
 				</tr>
 			</tbody>
 		</table>

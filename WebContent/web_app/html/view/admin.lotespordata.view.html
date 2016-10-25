@@ -7,7 +7,7 @@
 			<div flex-gt-xs>
 				<h5>Escolha uma data no calendario</h5>
 				<md-datepicker ng-model="dataPesquisa" md-placeholder="Enter date"></md-datepicker>
-				<md-button class="md-fab md-mini md-primary" aria-label="More" ng-click="buscarLotes(dataPesquisa)">
+				<md-button class="md-fab md-mini md-primary" aria-label="More" ng-click="buscarLotesPorData(dataPesquisa)">
 			        <md-icon md-svg-icon="web_app/img/icons/search-icon.svg"></md-icon>
 			    </md-button>
 			</div>
@@ -26,10 +26,10 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="lote in historico">
-					<th scope="row">{{lote.id}}</td>
-					<td>{{lote.produto}}</td>
-					<td>{{lote.lanceInicial | currency}}</td>
-					<td>{{lote.arremate | currency}}</td>
+					<th scope="row">{{lote.code}}</td>
+					<td>{{lote.product}}</td>
+					<td>{{lote.initialValue | currency}}</td>
+					<td>{{lote.finalValue | currency}}</td>
 				</tr>
 			</tbody>
 		</table>

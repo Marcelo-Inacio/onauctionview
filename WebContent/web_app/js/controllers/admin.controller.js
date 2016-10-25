@@ -1,10 +1,8 @@
-onAuctionControllers.controller("AdminController",  function($scope, adminService, loginService) {
+onAuctionControllers.controller("AdminController",  function($scope, adminService, loginService, $interval) {
 	
 	$scope.currentNavItem;
 	
-	$scope.lotes = [
-			//id: '',	produto: '', intervalo: null, lanceInicial: null, status: ''
-	]
+	$scope.lotes = []
 	
 	$scope.historico = []
 	
@@ -14,13 +12,22 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	$scope.excluirLote = _excluirLote;
 	$scope.sair = _deslogar;
 	$scope.irPagina = _irPagina;
-	$scope.buscarLotes = _buscarLotes;
+	$scope.buscarLotesPorData = _buscarLotesPorData;
 	
 	var carregarLotes = _carregarlotes;
 		
 	$scope.admistrador;
 	
 	$scope.dataPesquisa = new Date();
+	
+	/**
+	 * A cada 5 segundos atualiza valores dos lotes, esperando alguma mudança feita
+	 * pelo leiloeiro no storage.
+	 */
+	this.atualizarLotes = function() {
+		$scope.lotes = atualizarValoresTela();
+    };
+    $interval(this.atualizarLotes.bind(this), 5000);
 
     function init() {
     	$scope.currentNavItem = StorageHelper.getItem('page');
@@ -34,16 +41,16 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
     	adminService.carregarTodosLotes().then(function (data) {
 			console.log(data);
 			$scope.lotes = data;
+			StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
         });
     }
     
 	function _salvarLote(lote) {
-		//lote.status = "criado";
-		//console.log(lote);
-		
+
 		adminService.salvarNovoLote(lote).then(function (data) {
 			console.log(data);
 			$scope.lotes.push(data);
+			StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
         });
 		
 		$scope.loteModal = null;
@@ -57,6 +64,7 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 			console.log(status);
 			if(status === 200) {
 				$scope.lotes.splice(index, 1);
+				StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
 			}
         });
 	}
@@ -66,16 +74,16 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 		alertify.success('Current position : ' + alertify.get('notifier','position'));
 	}
 	
-	function _buscarLotes(data) {
+	function _buscarLotesPorData(data) {
 		adminService.pesquisarLotePorData(data).then(function (data) {
 			console.log(data);
-			$scope.lotes = data;
+			$scope.historico = data;
         });
 	}
 	
 	function _irPagina(pagina) {
-		StorageHelper.setItem('page',pagina);
-		document.location.href = '#/'+pagina;
+		StorageHelper.setItem('page', pagina);
+		document.location.href = '#/' + pagina;
 	}
 	
 	init();

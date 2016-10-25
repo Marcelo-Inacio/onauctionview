@@ -1,7 +1,7 @@
 /**
  * funcionalidade de auxilio a acesso ao storage do navegador
  */
-var StorageHelper = (function(){
+var StorageHelper = (function() {
 
 	var SH = {};
 
@@ -20,3 +20,17 @@ var StorageHelper = (function(){
 	return SH;
 
 })();
+
+/**
+ * funcionalidade que retorna a URL padrao de recursos ao servidor
+ */
+function getDefaultUrlPath() {
+	return "http://localhost:8080/onauction";
+}
+
+/**
+*funcionalidade que atualiza os valores de visualização do leiloeiro e administrador
+*/
+function atualizarValoresTela() {
+	return StorageHelper.getItem('lotes');
+}

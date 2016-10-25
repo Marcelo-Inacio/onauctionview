@@ -12,21 +12,26 @@
 	<h5>Aonde você estiver.</h5>
 	<div>
 		<div layout="row" layout-padding layout-wrap layout-margin ng-cloak layout-align="space-around">
-			<div class="padded" md-whiteframe="7" flex="100" flex-gt-sm="50" layout="column" 
-			layout-align="center center" style="padding: 50px;">
-			    <span ng-non-bindable>PRODUTO : -</span>
-			    <span>ULTIMO LANCE : "{{ultimoLance}}"</span>			    
-			    <div layout="column" class="md-inline-form">
-			    	<md-content layout-gt-sm="row" layout-padding>
-			    		<div>
-			    			<md-input-container>
-						    	<label>LANCE</label>
-						     	<input type="number" step="0.01" ng-model="usuario.lance">
-						     </md-input-container>
-			    		</div>
-			    	</md-content>
+			<div class="padded" md-whiteframe="7" flex="100" flex-gt-sm="50" layout="column" layout-align="center center" style="padding: 50px;">
+			    <div ng-hide="loteEmAndamento === null" style="text-align: center;">
+				    <h4>PRODUTO : {{loteEmAndamento.produtoLeiloado}}</h4>
+				    <h4>ULTIMO LANCE OFERTADO: {{loteEmAndamento.ultimoLance | currency}}</h4>		    
+				    <div layout="column" class="md-inline-form">
+				    	<md-content layout-gt-sm="row" layout-padding>
+				    		<div style="margin-left: auto; margin-right: auto;">
+				    			<md-input-container>
+							    	<label>LANCE</label>
+							     	<input type="number" step="0.01" ng-model="usuario.lance">
+							     </md-input-container>
+				    		</div>
+				    	</md-content>
+				    </div>
+				    <md-button class="md-primary" ng-click="entrar()" ng-hide="estaLogado()">ENTRE PARA DAR LANCE</md-button>
+				    <md-button class="md-primary" ng-click="darLance(usuario.lance)" ng-show="estaLogado()">DAR LANCE</md-button>
 			    </div>
-			    <md-button class="md-primary" ng-click="darLance(usuario.lance)" ng-show="estaLogado()">DAR LANCE</md-button>
+			    <div ng-show="loteEmAndamento === null">
+			    	<h4 style="text-align: center;">NENHUM LOTE EM LEILÃO NO MOMENTO, TENTE MAIS TARDE.</h4>
+			    </div>
 			 </div>
 		</div>
 	</div>

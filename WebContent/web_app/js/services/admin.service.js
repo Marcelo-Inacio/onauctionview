@@ -2,7 +2,7 @@ angular.module("onauction").factory("adminService",  adminService);
 
 function adminService($http, $q) {
 	
-	var urlPath = "http://localhost:8080/onauction";
+	var urlPath = getDefaultUrlPath();//"http://localhost:8585/onauction";
 	
 	return {
 		pesquisarLotePorData : _pesquisar,
@@ -87,12 +87,15 @@ function adminService($http, $q) {
 	}
 	
 	function _pesquisar(data) {
-		console.log(data);
+		
 		var deferred = $q.defer();
-		var dateMilli = data.getTime();
+		var dateMilli = {date: data.getTime()};
+		var json = JSON.stringify(dateMilli);
+		console.log(json);
 		$http({
-            method: 'GET',
-            url: urlPath + '/batches/' + dateMilli
+            method: 'POST',
+            url: urlPath + '/batches/date',
+            data: json
         }).
             success(function (data, status, headers, config) {
                 deferred.resolve(data);
