@@ -6,7 +6,6 @@ function compradorService($http, $q) {
 	
 	return {
 		recuperarUltimoLance : _ultimoLance,
-		produtoSendoLeiloado : _produto,
 		darLance : _darLance
 	};
 	
@@ -17,35 +16,12 @@ function compradorService($http, $q) {
 		console.log(json);
 		$http({
             method: 'POST',
-            url: urlPath + '/' + codComprador + '/toBid',
+            url: urlPath + '/batch/' + codComprador + '/toBid',
             data: json
         }).
             success(function (data, status, headers, config) {
             	
                 deferred.resolve(status);
-            }).
-            then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                deferred.reject("no authentication");
-            });
-
-        return deferred.promise;
-	}
-	
-	function _produto() {
-		var deferred = $q.defer();
-		
-		$http({
-            method: 'GET',
-            url: urlPath + '/batch'
-        }).
-            success(function (data, status, headers, config) {
-            	
-                deferred.resolve(data);
             }).
             then(function successCallback(response) {
                 // this callback will be called asynchronously

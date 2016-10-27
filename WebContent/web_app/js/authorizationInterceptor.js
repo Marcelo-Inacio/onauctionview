@@ -7,6 +7,7 @@ publication.factory('authorizationInterceptor', ['$rootScope', '$q', '$location'
             var authData = StorageHelper.getItem('Authorization');
 
             if (authData) {
+            	console.log(authData);
                 config.headers.token = authData.token;
             }
 
