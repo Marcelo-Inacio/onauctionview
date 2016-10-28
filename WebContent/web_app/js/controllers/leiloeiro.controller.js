@@ -2,12 +2,7 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
 	
 	$scope.leiloeiro;
 	
-	$scope.lotes = [/*{id:0001, status:'fechado', produto:'bike', lanceInicial:100, intervalo:20},
-	                {id:0002, status:'andamento', produto:'bike', lanceInicial:100, intervalo:20},
-	                {id:0003, status:'criado', produto:'bike', lanceInicial:100, intervalo:20},
-	                {id:0004, status:'criado', produto:'bike', lanceInicial:100, intervalo:20},
-	                {id:0005, status:'criado', produto:'bike', lanceInicial:100, intervalo:20},
-	                {id:0006, status:'criado', produto:'bike', lanceInicial:100, intervalo:20}*/]
+	$scope.lotes = []
 	
 	$scope.loteAndamento = _hasOpen;
 	$scope.abrirLote = _abrirLote;
@@ -21,15 +16,16 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
 	 * pelo administrador no storage.
 	 */
 	this.atualizarLotes = function() {
-		$scope.lotes = atualizarValoresTela();
+		_carregarLotes();
     };
     $interval(this.atualizarLotes.bind(this), 5000);
 	
 	init();
 
     function init() {
+    	loginService.validarUsuario('AUCTIONEER');
+    	StorageHelper.setItem('page', 'leiloeiro');
     	_carregarLotes();
-        //$scope.leiloeiro = loginService.validarUsuario('leiloeiro');
 
     }
     

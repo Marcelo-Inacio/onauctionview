@@ -11,12 +11,14 @@ function compradorService($http, $q) {
 	
 	function _darLance(lance, codComprador) {
 		var deferred = $q.defer();
+		var token = getToken();
 		var valor = {value: lance};
 		var json = JSON.stringify(valor); 
-		console.log(json);
+
 		$http({
             method: 'POST',
             url: urlPath + '/batch/' + codComprador + '/toBid',
+            headers: {'Authorization': token},
             data: json
         }).
             success(function (data, status, headers, config) {
@@ -41,7 +43,7 @@ function compradorService($http, $q) {
 		
 		$http({
             method: 'GET',
-            url: urlPath + '/lastBid'
+            url: urlPath + '/batch/lastBid'
         }).
             success(function (data, status, headers, config) {
             	
@@ -51,7 +53,6 @@ function compradorService($http, $q) {
                 // this callback will be called asynchronously
                 // when the response is available
             }, function errorCallback(response) {
-            	console.log('erro service');
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 deferred.reject("no authentication");

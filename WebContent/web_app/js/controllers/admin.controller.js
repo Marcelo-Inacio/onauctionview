@@ -25,16 +25,18 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	 * pelo leiloeiro no storage.
 	 */
 	this.atualizarLotes = function() {
-		$scope.lotes = atualizarValoresTela();
+		carregarLotes();
+
     };
     $interval(this.atualizarLotes.bind(this), 5000);
 
     function init() {
+    	loginService.validarUsuario('ADMIN');
+    	StorageHelper.setItem('page', 'admin');
     	$scope.currentNavItem = StorageHelper.getItem('page');
     	if($scope.currentNavItem === 'admin') {
     		carregarLotes();    		
     	}
-        //$scope.admistrador = loginService.validarUsuario('administrador');
     }
     
     function _carregarlotes() {
@@ -46,7 +48,6 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
     }
     
 	function _salvarLote(lote) {
-
 		adminService.salvarNovoLote(lote).then(function (data) {
 			console.log(data);
 			$scope.lotes.push(data);
@@ -70,8 +71,7 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	}
 	
 	function _deslogar() {
-		alertify.set('notifier','position', 'bottom-right');
-		alertify.success('Current position : ' + alertify.get('notifier','position'));
+		loginService.fazerLogout();
 	}
 	
 	function _buscarLotesPorData(data) {

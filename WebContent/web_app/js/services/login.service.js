@@ -7,7 +7,6 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
 		fazerLogin: _Login,
 		fazerLogout: _Logout,
 		validarUsuario: _validar,
-		identificar: _identificar,
 		estaLogado: _estaLogado
 	};
 	
@@ -16,9 +15,6 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
 	}
 	
 	function _Login(usuario) {
-		console.log('service: '+usuario);
-		//usuarioLogado = true;
-		//document.location.href = '#/index';
 		
 		var deferred = $q.defer();
 		
@@ -29,8 +25,12 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
             params: {username: usuario.username, password: usuario.password}
         }).
             success(function (data, status, headers, config) {
+            	var usuario = headers("User").split(" ");
             	StorageHelper.setItem('Authorization', headers("Authorization"));
+            	StorageHelper.setItem('Usuario', usuario[0]);
+            	StorageHelper.setItem('Perfil', usuario[1]);
             	usuarioLogado = true;
+            	_redirecionar(usuario[1]);
                 deferred.resolve(data);
             }).
             then(function successCallback(response) {
@@ -43,55 +43,36 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
     }
 	
 	function _Logout() {
-		console.log('saindo..');
 		usuarioLogado = false;
-		StorageHelper.removeItem('Authentication');
+		StorageHelper.removeItem('Authorization');
+		StorageHelper.removeItem('Perfil');
+		StorageHelper.removeItem('Usuario');
+		_validar(null);
 	}
 	
 	function _validar(type) {
-        var usuario = StorageHelper.getItem('perfil'); //identifica o usuario logado
-        alert(type);
-        //se não houver identificação ou se não for o typo informado redireciona para login
-        switch(type) {
+        var perfil = StorageHelper.getItem('Perfil'); //identifica o usuario logado
+        
+        if(perfil == null || type !== perfil) {
+        	document.location.href = '#/index';
+        }
+        //se não houver identificação ou se não for o tipo informado redireciona para login
+    }
+	
+	function _redirecionar(perfil) {
+		switch(perfil) {
 	        case 'ADMIN':
 	        	document.location.href = '#/admin';
 	        	break;
-	        case 'AUCTIONNER':
+	        case 'AUCTIONEER':
 	        	document.location.href = '#/leiloeiro';
 	        	break;
 	        case 'BUYER':
 	        default:
 	        	document.location.href = '#/index';
-	        break;
-        }
-        
-        //return usuario; //se der tudo certo irá retornar os dados de quem está logado chamando a função especifica
-    }
-	
-	function _identificar(token) {
-		alert(token + "   _dentificar");
-		var deferred = $q.defer();
-		
-        $http({
-            method: 'GET',
-            headers: {'Authorization': token},
-            url: urlPath + '/user/identify',
-        }).
-            success(function (data, status, headers, config) {
-            	var perfil = headers("profile");
-            	StorageHelper.setItem('perfil', perfil);
-            	usuarioLogado = true;
-            	_validar(perfil);
-                //deferred.resolve(data);
-            }).
-            then(function successCallback(response) {
-            	
-            }, function errorCallback(response) {
-                deferred.reject("no authentication");
-            });
-
-        return deferred.promise;
-    }
+	        	break;
+		}
+	}
     
 
 }]);

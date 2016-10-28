@@ -1,19 +1,22 @@
 onAuctionControllers.controller("CompradorController",  function($scope, loginService, compradorService, $interval) {
 	
-	//$scope.comprador;
-	
 	$scope.entrar = _entrar;
 	$scope.sair = _logout;
 	$scope.darLance = _darLance;
 	$scope.estaLogado = _verificarLogado;
 	
 	$scope.loteEmAndamento = null;
+	
+	var pegarLance;
 
 	/**
 	 * função que a cada 5 seg realiza uma chamada no servidor, verificando o ultimo
 	 * lance ofertado no lote em que esta aberto.
 	 */
     ultimoLanceOfertado = function() {
+    	if(StorageHelper.getItem('page') !== 'comprador') {
+    		stop(); //para o $interval para que nao recupere o ultimo lance do lote
+    	}
     	compradorService.recuperarUltimoLance().then(function (data, status) {
 			if(data !== null) {
 				if($scope.loteEmAndamento === null ) {
@@ -22,19 +25,27 @@ onAuctionControllers.controller("CompradorController",  function($scope, loginSe
 				$scope.loteEmAndamento.ultimoLance = data.value;
 				$scope.loteEmAndamento.produtoLeiloado = data.product;
 				$scope.loteEmAndamento.intervaloDeLance = data.valueInterval;
-			} else if (status !== 200){
-				$scope.loteEmAndamento = null;
 			}
+        }, function(status) {
+        	$scope.loteEmAndamento = null;
         });
     };
 
-    $interval(ultimoLanceOfertado, 5000);
+    function start() {
+    	pegarLance = $interval(ultimoLanceOfertado, 5000);    	
+    }
+    
+    function stop() {
+    	$interval.cancel(pegarLance);
+    	pegarLance = undefined;
+    }
 	
 	init();
 
     function init() {
+    	start();
+    	StorageHelper.setItem('page', 'comprador');
     	this.ultimoLanceOfertado();
-        //$scope.comprador = loginService.validarUsuario('comprador');
     }
     
     function _darLance(lance) {
@@ -42,7 +53,8 @@ onAuctionControllers.controller("CompradorController",  function($scope, loginSe
     		alertify.error('lance inválido');
     		return;
     	}
-    	compradorService.darLance(lance, '0010').then(function (status) {
+    	var usuarioId = StorageHelper.getItem('Usuario');
+    	compradorService.darLance(lance, usuarioId).then(function (status) {
 			if(status === 200) {
 				$scope.loteEmAndamento.ultimoLance = lance;
 			}

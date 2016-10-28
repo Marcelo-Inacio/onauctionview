@@ -12,9 +12,11 @@ function leiloeiroService($http, $q) {
 	
 	function _fecharLote() {
 		var deferred = $q.defer();
+		var token = getToken();
 		
 		$http({
             method: 'POST',
+            headers: {'Authorization': token},
             url: urlPath + '/batch/close'
         }).
             success(function (data, status, headers, config) {
@@ -35,9 +37,11 @@ function leiloeiroService($http, $q) {
 	
 	function _abrirLote(id) {
 		var deferred = $q.defer();
+		var token = getToken();
 		
 		$http({
             method: 'POST',
+            headers: {'Authorization': token},
             url: urlPath + '/batch/' + id + '/open'
         }).
             success(function (data, status, headers, config) {
@@ -58,9 +62,11 @@ function leiloeiroService($http, $q) {
 	
 	function _carregarLotes() {
 		var deferred = $q.defer();
+		var token = getToken();
 		
 		$http({
             method: 'GET',
+            headers: {'Authorization': token},
             url: urlPath + '/batches'
         }).
             success(function (data, status, headers, config) {

@@ -9,6 +9,12 @@ onAuctionControllers.controller("LoginController",  function($scope, loginServic
 	
 	$scope.fazerLogin = _fazerLogin;
 	
+	init();
+	
+	function init() {
+		StorageHelper.setItem('page', 'login');
+	}
+	
 		
 	function _fazerLogin(usuario) {
 		console.log(usuario);
@@ -19,10 +25,6 @@ onAuctionControllers.controller("LoginController",  function($scope, loginServic
 		}
 		
 		loginService.fazerLogin(userLogin).then(function (data) {
-			var token = StorageHelper.getItem("Authorization");
-			loginService.identificar(token).then(function (data){
-				
-			});
 
         });
     

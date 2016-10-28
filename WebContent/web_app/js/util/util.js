@@ -21,6 +21,9 @@ var StorageHelper = (function() {
 
 })();
 
+function getToken() {
+	return StorageHelper.getItem('Authorization');
+}
 /**
  * funcionalidade que retorna a URL padrao de recursos ao servidor
  */

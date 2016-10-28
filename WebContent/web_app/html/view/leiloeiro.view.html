@@ -29,7 +29,7 @@
 					<td>{{lote.initialValue | currency}}</td>
 					<td>{{lote.valueInterval | currency}}</td>
 					<td ng-show="lote.status === 'CREATED' && !loteAndamento()"><md-button class="md-warn" ng-click="abrirLote(lote)">abrir</md-button></td>
-					<td ng-show="lote.status == 'OPEN' && loteAndamento()"><md-button class="md-warn" ng-click="fecharLote(lote)">fechar</md-button></td>
+					<td ng-show="lote.status === 'OPEN' && loteAndamento()"><md-button class="md-warn" ng-click="fecharLote(lote)">fechar</md-button></td>
 					<td ng-show="(lote.status === 'CLOSED') || (lote.status === 'CREATED' && loteAndamento())"><md-button ng-disabled="true">-</md-button></td>
 				</tr>
 			</tbody>

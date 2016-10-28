@@ -13,10 +13,11 @@ function adminService($http, $q) {
 	
 	function _carregarLotes() {
 		var deferred = $q.defer();
-		
+		var token = getToken();
 		$http({
             method: 'GET',
-            url: urlPath + '/batches'
+            url: urlPath + '/batches',
+            headers: {'Authorization': token}
         }).
             success(function (data, status, headers, config) {
             	
@@ -38,11 +39,13 @@ function adminService($http, $q) {
 		
 		var deferred = $q.defer();
 		var json = JSON.stringify(lote); 
+		var token = getToken();
 		console.log(json);
 		
         $http({
             method: 'POST',
             url: urlPath + '/batch',
+            headers: {'Authorization': token},
             data: json
         }).
             success(function (data, status, headers, config) {
@@ -65,10 +68,12 @@ function adminService($http, $q) {
 	function _excluir(id) {
 		console.log(id);
 		var deferred = $q.defer();
+		var token = getToken();
 		
 		$http({
             method: 'DELETE',
             url: urlPath + '/batch/' + id,
+            headers: {'Authorization': token}
         }).
             success(function (data, status, headers, config) {
             	
@@ -89,12 +94,14 @@ function adminService($http, $q) {
 	function _pesquisar(data) {
 		
 		var deferred = $q.defer();
+		var token = getToken();
 		var dateMilli = {date: data.getTime()};
 		var json = JSON.stringify(dateMilli);
 		console.log(json);
 		$http({
             method: 'POST',
             url: urlPath + '/batches/date',
+            headers: {'Authorization': token},
             data: json
         }).
             success(function (data, status, headers, config) {
