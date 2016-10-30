@@ -28,7 +28,7 @@ function getToken() {
  * funcionalidade que retorna a URL padrao de recursos ao servidor
  */
 function getDefaultUrlPath() {
-	return "http://localhost:8080/onauction";
+	return "http://192.168.1.20:8080/onauction";
 }
 
 /**

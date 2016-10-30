@@ -16,26 +16,38 @@ onAuctionControllers.controller("AdminController",  function($scope, adminServic
 	
 	var carregarLotes = _carregarlotes;
 		
-	$scope.admistrador;
-	
 	$scope.dataPesquisa = new Date();
 	
+	var pegarLotes;
 	/**
 	 * A cada 5 segundos atualiza valores dos lotes, esperando alguma mudança feita
 	 * pelo leiloeiro no storage.
 	 */
-	this.atualizarLotes = function() {
+	atualizarLotes = function() {
+		if(StorageHelper.getItem('page') !== 'admin') {
+    		stop(); //para o $interval para que nao recupere o ultimo lance do lote
+    		return;
+    	}
 		carregarLotes();
 
     };
-    $interval(this.atualizarLotes.bind(this), 5000);
+    
+    function start() {
+    	pegarLotes = $interval(atualizarLotes, 10000);    	
+    }
+    
+    function stop() {
+    	$interval.cancel(pegarLotes);
+    	pegarLotes = undefined;
+    }
 
     function init() {
     	loginService.validarUsuario('ADMIN');
     	StorageHelper.setItem('page', 'admin');
     	$scope.currentNavItem = StorageHelper.getItem('page');
     	if($scope.currentNavItem === 'admin') {
-    		carregarLotes();    		
+    		carregarLotes();
+    		start();
     	}
     }
     

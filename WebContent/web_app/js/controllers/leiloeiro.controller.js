@@ -1,24 +1,35 @@
-onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloeiroService, loginService, $interval) {
-	
-	$scope.leiloeiro;
-	
+onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloeiroService, loginService, compradorService, $interval) {
+		
 	$scope.lotes = []
 	
-	$scope.loteAndamento = _hasOpen;
 	$scope.abrirLote = _abrirLote;
 	$scope.fecharLote = _fecharLote;
 	$scope.sair = _sair;
 	
-	var andamento = false;
+	$scope.leilaoEmAndamento = null;
+	
+	var pegarLotes;
 	
 	/**
 	 * A cada 5 segundos atualiza valores dos lotes, esperando alguma mudança feita
 	 * pelo administrador no storage.
 	 */
-	this.atualizarLotes = function() {
+	atualizarLotes = function() {
+		if(StorageHelper.getItem('page') !== 'leiloeiro') {
+    		stop(); //para o $interval para que nao recupere o ultimo lance do lote
+    		return;
+    	}
 		_carregarLotes();
     };
-    $interval(this.atualizarLotes.bind(this), 5000);
+    
+    function start() {
+    	pegarLotes = $interval(atualizarLotes, 10000);    	
+    }
+    
+    function stop() {
+    	$interval.cancel(pegarLotes);
+    	pegarLotes = undefined;
+    }
 	
 	init();
 
@@ -26,19 +37,16 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
     	loginService.validarUsuario('AUCTIONEER');
     	StorageHelper.setItem('page', 'leiloeiro');
     	_carregarLotes();
-
+    	_verificarLeilaoEmAndamento();
+    	start();
     }
-    
-    function _hasOpen() {
-    	return andamento;
-    }
-    
+     
     function _abrirLote(lote) {
     	var index = $scope.lotes.indexOf(lote);
     	leiloeiroService.abrirLote(lote.code).then(function (status) {
 			console.log(status);
 			if(status === 200) {
-				andamento = true;
+				$scope.leilaoEmAndamento = true;
 				$scope.lotes[index].status = 'OPEN';
 				StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
 			}
@@ -48,10 +56,9 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
     function _fecharLote(lote) {
     	var index = $scope.lotes.indexOf(lote);
     	leiloeiroService.fecharLote(lote.code).then(function (status) {
-			console.log(status);
 			if(status === 200) {
 				$scope.lotes[index].status = 'CLOSED';
-		    	andamento = false;
+				$scope.leilaoEmAndamento = false;
 		    	StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
 			}
         });
@@ -59,6 +66,7 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
     
     function _sair() {
     	loginService.fazerLogout();
+    	stop();
     }
     
     function _carregarLotes() {
@@ -66,6 +74,16 @@ onAuctionControllers.controller("LeiloeiroController",  function($scope, leiloei
 			console.log(data);
 			$scope.lotes = data;
 			StorageHelper.setItem('lotes', $scope.lotes); //atualiza valores do storage
+        });
+    }
+    
+    function _verificarLeilaoEmAndamento() {
+    	compradorService.recuperarUltimoLance().then(function (response) {
+    		if(response.status !== 200) {
+    			$scope.leilaoEmAndamento = false;
+    		} else {
+    			$scope.leilaoEmAndamento = true;
+    		}
         });
     }
 	

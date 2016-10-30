@@ -46,10 +46,9 @@ function compradorService($http, $q) {
             url: urlPath + '/batch/lastBid'
         }).
             success(function (data, status, headers, config) {
-            	
-                deferred.resolve(data, status);
             }).
             then(function successCallback(response) {
+            	deferred.resolve(response);
                 // this callback will be called asynchronously
                 // when the response is available
             }, function errorCallback(response) {

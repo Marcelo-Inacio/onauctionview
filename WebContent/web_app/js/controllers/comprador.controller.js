@@ -16,23 +16,25 @@ onAuctionControllers.controller("CompradorController",  function($scope, loginSe
     ultimoLanceOfertado = function() {
     	if(StorageHelper.getItem('page') !== 'comprador') {
     		stop(); //para o $interval para que nao recupere o ultimo lance do lote
+    		return;
     	}
-    	compradorService.recuperarUltimoLance().then(function (data, status) {
-			if(data !== null) {
-				if($scope.loteEmAndamento === null ) {
-					$scope.loteEmAndamento = {};
-				}
-				$scope.loteEmAndamento.ultimoLance = data.value;
-				$scope.loteEmAndamento.produtoLeiloado = data.product;
-				$scope.loteEmAndamento.intervaloDeLance = data.valueInterval;
+    	compradorService.recuperarUltimoLance().then(function (response) {
+    		if(response.status !== 200) {
+    			$scope.loteEmAndamento = null;
+    			return;
+    		}
+    		var data = response.data;
+			if($scope.loteEmAndamento === null ) {
+				$scope.loteEmAndamento = {};
 			}
-        }, function(status) {
-        	$scope.loteEmAndamento = null;
+			$scope.loteEmAndamento.ultimoLance = data.value;
+			$scope.loteEmAndamento.produtoLeiloado = data.product;
+			$scope.loteEmAndamento.intervaloDeLance = data.valueInterval;
         });
     };
 
     function start() {
-    	pegarLance = $interval(ultimoLanceOfertado, 5000);    	
+    	pegarLance = $interval(ultimoLanceOfertado, 10000);    	
     }
     
     function stop() {

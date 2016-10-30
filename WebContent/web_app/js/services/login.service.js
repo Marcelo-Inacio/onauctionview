@@ -25,6 +25,10 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
             params: {username: usuario.username, password: usuario.password}
         }).
             success(function (data, status, headers, config) {
+            	if(status !== 200) {
+            		alert('Verifique seu username/password!');
+            		return;
+            	}
             	var usuario = headers("User").split(" ");
             	StorageHelper.setItem('Authorization', headers("Authorization"));
             	StorageHelper.setItem('Usuario', usuario[0]);
