@@ -25,21 +25,18 @@ publication.factory('loginService',  ['$http', '$q', function ($http, $q) {
             params: {username: usuario.username, password: usuario.password}
         }).
             success(function (data, status, headers, config) {
-            	if(status !== 200) {
-            		alert('Verifique seu username/password!');
-            		return;
-            	}
             	var usuario = headers("User").split(" ");
             	StorageHelper.setItem('Authorization', headers("Authorization"));
             	StorageHelper.setItem('Usuario', usuario[0]);
             	StorageHelper.setItem('Perfil', usuario[1]);
             	usuarioLogado = true;
-            	_redirecionar(usuario[1]);
-                deferred.resolve(data);
+            	_redirecionar(usuario[1]);            	
             }).
             then(function successCallback(response) {
+            	deferred.resolve(response.data);
 
             }, function errorCallback(response) {
+            	alert('erro ao fazer login');
                 deferred.reject("no authentication");
             });
 

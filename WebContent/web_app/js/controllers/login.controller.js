@@ -23,9 +23,13 @@ onAuctionControllers.controller("LoginController",  function($scope, loginServic
 				username : usuario.username,
 				password: usuario.password
 		}
+		if(!userLogin.username || !userLogin.password) {
+			alert('por favor verifique seu username/password..');
+			return;
+		}
 		
 		loginService.fazerLogin(userLogin).then(function (data) {
-
+			
         });
     
 	}	
